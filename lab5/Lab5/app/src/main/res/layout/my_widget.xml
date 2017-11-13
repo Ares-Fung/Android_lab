@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000"
+    android:padding="@dimen/widget_margin">
+
+    <ImageView
+        android:id="@+id/appwidget_image"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="4dp"
+        android:gravity="left|center_vertical"
+        android:src="@mipmap/shoplist"
+    />
+
+    <TextView
+        android:id="@+id/appwidget_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/appwidget_image"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="0dp"
+        android:gravity="left|center_vertical"
+        android:background="#00000000"
+        android:layout_centerVertical="true"
+        android:contentDescription="Lab5"
+        android:text="当前没有任何信息"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        android:textStyle="bold|italic" />
+
+</RelativeLayout>

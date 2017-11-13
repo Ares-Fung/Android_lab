@@ -1,4 +1,4 @@
-package ares_android.lab4;
+package ares_android.lab5;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,11 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import static ares_android.lab4.MainActivity.shoplistdata;
+import static ares_android.lab5.MainActivity.shoplistdata;
 
 public class details extends AppCompatActivity {
     private Merchandise tempMerchandise;
-    private MyDynamicReceiver myDynamicReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +67,20 @@ public class details extends AppCompatActivity {
             public void onClick(View view) {
                 shoplistdata.add(tempMerchandise);
                 Toast.makeText(details.this, "商品已添加到购物车",Toast.LENGTH_SHORT).show();
-                Intent intentBroadcast = new Intent("com.lab4.MyDynamicFilter");
+                Intent intentBroadcast = new Intent("com.lab5.MyDynamicFilter");
                 intentBroadcast.putExtra("Merchandise", tempMerchandise);
                 sendBroadcast(intentBroadcast);
+                Intent intentBroadcast2 = new Intent("com.lab5.MyDynamicWidgetFilter");
+                intentBroadcast2.putExtra("Merchandise", tempMerchandise);
+                sendBroadcast(intentBroadcast2);
             }
         });
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
 }

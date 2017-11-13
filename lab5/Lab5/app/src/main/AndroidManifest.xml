@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ares_android.lab4">
+    package="ares_android.lab5">
 
     <application
         android:allowBackup="true"
@@ -9,29 +9,40 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
-            android:name="ares_android.lab4.MainActivity"
+            android:name=".MainActivity"
             android:enabled="true"
             android:exported="true"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name="ares_android.lab4.details"
+            android:name=".details"
             android:enabled="true"
             android:exported="true">
+
         </activity>
 
-        <receiver
-            android:name="ares_android.lab4.MyStaticReceiver">
+        <receiver android:name=".MyStaticReceiver">
             <intent-filter>
-                <action android:name="com.lab4.MyStaticFilter" />
+                <action android:name="com.lab5.MyStaticFilter" />
             </intent-filter>
+        </receiver>
+
+        <receiver android:name=".MyWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.lab5.MyStaticWidgetFilter"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/my_widget_info" />
         </receiver>
 
     </application>

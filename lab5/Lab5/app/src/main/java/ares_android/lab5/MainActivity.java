@@ -1,4 +1,4 @@
-package ares_android.lab4;
+package ares_android.lab5;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private MyAdapter2 mAdapter2;
     private static ArrayList<Merchandise> merchandisedata = new ArrayList<>();
     public static ArrayList<Merchandise> shoplistdata = new ArrayList<>();
+    public static MyWidget myWidget = new MyWidget();
     private int Size = 10;
     private Merchandise tempMerchandise;
     public RecyclerView mRecyclerView;
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         });
         mRecyclerView.setAdapter(mAdapter1);
         mRecyclerView.setVisibility(View.GONE);
+
         //mRecyclerView.addItemDecoration(new MyDividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
         mListView = (ListView) findViewById(R.id.shoppinglist);
@@ -146,20 +148,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Bundle receivedata = getIntent().getExtras();
+        Bundle receivedata = new Bundle();
+        receivedata = MainActivity.this.getIntent().getExtras();
         if(receivedata!=null) {
             String temp = receivedata.getString("Backto");
             if (temp != null) {
                 current = temp;
             }
-        }
+        };
 
-        Toast.makeText(MainActivity.this, current,Toast.LENGTH_SHORT).show();
         if(current.equals("RecycleView")) {
             mListView.setVisibility(View.GONE);
             mRecyclerView.setVisibility(View.VISIBLE);
             mFloatingActionButton.setImageResource(R.mipmap.shoplist);
         }
+        else
         if(current.equals("ListView")){
             mRecyclerView.setVisibility(View.GONE);
             mListView.setVisibility(View.VISIBLE);
@@ -184,19 +187,28 @@ public class MainActivity extends AppCompatActivity {
                 merchandisedata.add(tempMerchandise);
             }
         }
+
         if(shoplistdata.isEmpty()) {
             tempMerchandise = new Merchandise("购物车", 0, "", 0, false);
             shoplistdata.add(tempMerchandise);
             current = "RecycleView";
             dynamic_start = false;
         }
+
         if(!dynamic_start) {
             IntentFilter dynamic_filter = new IntentFilter();
-            dynamic_filter.addAction("com.lab4.MyDynamicFilter");
+            dynamic_filter.addAction("com.lab5.MyDynamicFilter");
             myDynamicReceiver = new MyDynamicReceiver();
             registerReceiver(myDynamicReceiver, dynamic_filter);
+
+            IntentFilter dynamic_widget_filter = new IntentFilter();
+            dynamic_widget_filter.addAction("com.lab5.MyDynamicWidgetFilter");
+            myWidget = new MyWidget();
+            registerReceiver(myWidget, dynamic_widget_filter);
+
             dynamic_start = true;
         }
+
         if(shoplistdata.size()==1)
             recommand();
     }
@@ -204,9 +216,16 @@ public class MainActivity extends AppCompatActivity {
     private void recommand() {
         int randomItem = new Random().nextInt(Size);
         Merchandise sendData = merchandisedata.get((int)randomItem);
-        Intent intentBroadcast = new Intent("com.lab4.MyStaticFilter");
+
+        Intent intentBroadcast = new Intent();
+        intentBroadcast.setAction("com.lab5.MyStaticFilter");
         intentBroadcast.putExtra("Merchandise", sendData);
         sendBroadcast(intentBroadcast);
+
+        Intent intentBroadcast2 = new Intent();
+        intentBroadcast2.setAction("com.lab5.MyStaticWidgetFilter");
+        intentBroadcast2.putExtra("Merchandise", sendData);
+        sendBroadcast(intentBroadcast2);
     }
 
     @Override
@@ -221,6 +240,7 @@ public class MainActivity extends AppCompatActivity {
             mListView.setVisibility(View.GONE);
             mRecyclerView.setVisibility(View.VISIBLE);
             mFloatingActionButton.setImageResource(R.mipmap.shoplist);
+
         }
         else
         if(current.equals("ListView")){
@@ -233,8 +253,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         unregisterReceiver(myDynamicReceiver);
+        unregisterReceiver(myWidget);
+        super.onDestroy();
     }
 
 

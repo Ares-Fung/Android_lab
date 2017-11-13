@@ -1,6 +1,7 @@
-package ares_android.lab4;
+package ares_android.lab5;
 
 import android.app.Notification;
+//import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -18,7 +19,7 @@ public class MyStaticReceiver extends BroadcastReceiver {
     private Merchandise tempMerchandise;
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(intent.getAction().equals("com.lab4.MyStaticFilter")) {
+        if(intent.getAction().equals("com.lab5.MyStaticFilter")) {
             tempMerchandise = (Merchandise)intent.getSerializableExtra("Merchandise");
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
             NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
